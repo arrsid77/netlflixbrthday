@@ -30,6 +30,7 @@ const CONFIG = {
           title: "Right Where We Left Off",
           desc: "A quiet evening, a long conversation, and the feeling that some stories don't need an ending — just a pause.",
           progress: 62,
+          image: "",
           videoUrl: ""
         }
       ]
@@ -41,24 +42,28 @@ const CONFIG = {
           ep: "Episode 1",
           title: "The First Conversation",
           desc: "Two strangers, one conversation that somehow never really stopped.",
+          image: "",
           videoUrl: ""
         },
         {
           ep: "Episode 2",
           title: "The First Selfie",
           desc: "Bad lighting, worse angle, and a photo that still makes the group chat laugh.",
+          image: "",
           videoUrl: ""
         },
         {
           ep: "Episode 3",
           title: "Late Night Talks",
           desc: "The hours after midnight, when the real conversations finally show up.",
+          image: "",
           videoUrl: ""
         },
         {
           ep: "Episode 4",
           title: "The Best Day Together",
           desc: "No plan, no schedule, and somehow the best day of the year.",
+          image: "",
           videoUrl: ""
         }
       ]
@@ -70,24 +75,28 @@ const CONFIG = {
           ep: "Scene 1",
           title: "The Inside Joke",
           desc: "Still not funny to anyone else. Still funny to us.",
-          videoUrl: ""
+          image: "assets/img2.webp",
+          videoUrl: "assets/video2.mp4"
         },
         {
           ep: "Scene 2",
           title: "That One Road Trip",
           desc: "Wrong turns, the right playlist, and a story we keep retelling.",
+          image: "",
           videoUrl: ""
         },
         {
           ep: "Scene 3",
           title: "The Surprise",
           desc: "A plan kept secret for weeks, and a reaction worth every bit of it.",
+          image: "",
           videoUrl: ""
         },
         {
           ep: "Scene 4",
           title: "Just an Ordinary Tuesday",
           desc: "Nothing happened. It was perfect anyway.",
+          image: "",
           videoUrl: ""
         }
       ]
@@ -155,13 +164,24 @@ function renderRows() {
       card.dataset.desc = episode.desc;
       card.dataset.ep = episode.ep;
       card.dataset.video = episode.videoUrl || "";
+      card.dataset.image = episode.image || "";
       card.dataset.gradient = gradient;
 
       const timecode = randomTimecode();
 
+      // poster priority: real image > video first-frame > gradient placeholder
+      let posterMarkup;
+      if (episode.image) {
+        posterMarkup = `<img class="placeholder-art" src="${episode.image}" alt="${episode.title}">`;
+      } else if (episode.videoUrl) {
+        posterMarkup = `<video class="placeholder-art" muted preload="metadata" playsinline src="${episode.videoUrl}#t=0.1"></video>`;
+      } else {
+        posterMarkup = `<div class="placeholder-art" style="background:${gradient}"></div>`;
+      }
+
       card.innerHTML = `
         <div class="card__poster">
-          <div class="placeholder-art" style="background:${gradient}"></div>
+          ${posterMarkup}
           <div class="card__scrim"></div>
           <div class="card__glow"></div>
           <span class="card__timecode">${timecode}</span>
@@ -265,8 +285,10 @@ function openModal(data) {
   if (data.video) {
     // a real video file/URL is attached — play it directly inside the page
     media.innerHTML = `<video controls playsinline src="${data.video}"></video>`;
+  } else if (data.image) {
+    media.innerHTML = `<img class="placeholder-art" src="${data.image}" alt="${data.title}">`;
   } else {
-    // no video yet — show the poster art instead
+    // no media yet — show the gradient poster instead
     media.innerHTML = `<div class="placeholder-art" style="background:${data.gradient}"></div>`;
   }
 
