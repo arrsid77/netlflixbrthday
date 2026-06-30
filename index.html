@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Story of Juno — An Original</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- ============================================
+       FILM GRAIN OVERLAY — purely atmospheric, sits above everything
+  ============================================= -->
+  <div class="grain" aria-hidden="true"></div>
+
+  <!-- ============================================
+       TOP NAVIGATION
+  ============================================= -->
+  <header class="topnav" id="topnav">
+    <div class="topnav__inner">
+      <a class="brand" href="#hero">
+        <span class="brand__mark">◎</span>
+        <span class="brand__name">ANNIVERSARY</span>
+      </a>
+      <nav class="topnav__links">
+        <a href="#row-continue">Continue Watching</a>
+        <a href="#row-memories">Best Memories</a>
+        <a href="#row-moments">Favorite Moments</a>
+        <a href="#row-special">Special Episode</a>
+      </nav>
+      <div class="profile-chip" aria-hidden="true"></div>
+    </div>
+  </header>
+
+  <!-- ============================================
+       HERO — full-screen cinematic banner
+  ============================================= -->
+  <section class="hero" id="hero">
+    <div class="hero__backdrop"></div>
+    <div class="hero__vignette"></div>
+
+    <div class="hero__content">
+      <p class="hero__eyebrow">A LIFE, ORIGINAL SERIES &nbsp;·&nbsp; SEASON 24</p>
+      <h1 class="hero__title">THE STORY OF<br><span id="heroName">JUNO</span></h1>
+      <p class="hero__subtitle">A journey worth celebrating.</p>
+
+      <div class="hero__actions">
+        <button class="btn btn--play" id="heroPlay">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M8 5v14l11-7z"/></svg>
+          Play
+        </button>
+        <button class="btn btn--info" id="heroInfo">
+          <svg viewBox="0 0 24 24" class="icon"><path d="M11 7h2v2h-2zm0 4h2v6h-2zm1-9C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18a8 8 0 1 1 0-16 8 8 0 0 1 0 16z"/></svg>
+          More Info
+        </button>
+      </div>
+
+      <p class="hero__meta">Runtime: A lifetime &nbsp;·&nbsp; Genre: Friendship, Joy, Adventure &nbsp;·&nbsp; Rated: ❤️ For Everyone Who Knows Them</p>
+    </div>
+
+    <button class="scroll-cue" id="scrollCue" aria-label="Scroll to episodes">
+      <span></span>
+    </button>
+  </section>
+
+  <!-- ============================================
+       MAIN — collections of "episodes" (memories)
+  ============================================= -->
+  <main class="rows">
+
+    <!-- CONTINUE WATCHING -->
+    <section class="row" id="row-continue">
+      <div class="row__head">
+        <h2 class="row__title">Continue Watching</h2>
+        <p class="row__sub">Pick up right where the story left off.</p>
+      </div>
+      <div class="row__track" data-track></div>
+    </section>
+
+    <!-- BEST MEMORIES -->
+    <section class="row" id="row-memories">
+      <div class="row__head">
+        <h2 class="row__title">Best Memories</h2>
+        <p class="row__sub">The episodes that defined the season.</p>
+      </div>
+      <div class="row__track" data-track></div>
+    </section>
+
+    <!-- FAVORITE MOMENTS -->
+    <section class="row" id="row-moments">
+      <div class="row__head">
+        <h2 class="row__title">Favorite Moments</h2>
+        <p class="row__sub">Short scenes, replayed often.</p>
+      </div>
+      <div class="row__track" data-track></div>
+    </section>
+
+    <!-- SPECIAL EPISODE — full width feature, locked -->
+    <section class="row row--special" id="row-special">
+      <div class="row__head">
+        <h2 class="row__title">Special Episode</h2>
+        <p class="row__sub">One final chapter. Available today only.</p>
+      </div>
+
+      <div class="special-card" id="specialCard">
+        <div class="special-card__backdrop"></div>
+        <div class="special-card__scrim"></div>
+
+        <!-- locked state -->
+        <div class="special-card__locked" id="specialLocked">
+          <div class="lock-icon">🔒</div>
+          <h3>Final Episode</h3>
+          <p>This episode unlocks once a year.</p>
+          <button class="btn btn--unlock" id="unlockBtn">Unlock Episode</button>
+        </div>
+
+        <!-- unlocked state (hidden until unlock) -->
+        <div class="special-card__unlocked hidden" id="specialUnlocked">
+          <p class="special-card__eyebrow">NOW PLAYING</p>
+          <h3 class="special-card__title">Happy Birthday <span class="heart">❤️</span></h3>
+          <p class="special-card__message" id="birthdayMessage">
+            Every season needs a finale worth waiting for — and this one is yours.
+            Thank you for every late-night talk, every inside joke, and every ordinary
+            day you made feel like a good episode. Here's to the next season being
+            even better than this one. Happy birthday.
+          </p>
+          <button class="btn btn--play" id="watchVideoBtn">
+            <svg viewBox="0 0 24 24" class="icon"><path d="M8 5v14l11-7z"/></svg>
+            Watch Birthday Video
+          </button>
+
+          <!-- inline video player, hidden until "Watch Birthday Video" is clicked -->
+          <div class="inline-player hidden" id="specialVideoWrap"></div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ============================================
+       MODAL — full screen "player" for a selected episode
+  ============================================= -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__scrim" data-close></div>
+    <div class="modal__panel" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__close" data-close aria-label="Close">✕</button>
+      <div class="modal__media" id="modalMedia"></div>
+      <div class="modal__body">
+        <p class="modal__eyebrow" id="modalEyebrow">EPISODE 1</p>
+        <h3 class="modal__title" id="modalTitle">Title</h3>
+        <p class="modal__desc" id="modalDesc">Description goes here.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============================================
+       CREDITS / FOOTER
+  ============================================= -->
+  <footer class="credits" id="credits">
+    <div class="credits__inner">
+      <p class="credits__line"><span>Directed by</span> Someone who truly cares about you</p>
+      <p class="credits__line"><span>Starring</span> <span id="creditsName">Juno</span></p>
+      <p class="credits__line"><span>Special Thanks</span> For being part of my story</p>
+      <p class="credits__end">— END OF SEASON —</p>
+    </div>
+  </footer>
+
+  <!-- ============================================
+       FLOATING MUSIC PLAYER
+  ============================================= -->
+  <div class="player" id="player">
+    <button class="player__toggle" id="playerToggle" aria-label="Play music">
+      <svg viewBox="0 0 24 24" class="icon icon--play"><path d="M8 5v14l11-7z"/></svg>
+      <svg viewBox="0 0 24 24" class="icon icon--pause hidden"><path d="M6 5h4v14H6zm8 0h4v14h-4z"/></svg>
+    </button>
+    <div class="player__info">
+      <p class="player__song" id="playerSong">Our Theme Song</p>
+      <p class="player__artist">Original Score</p>
+    </div>
+    <input type="range" class="player__volume" id="playerVolume" min="0" max="1" step="0.01" value="0.6" aria-label="Volume">
+    <audio id="bgAudio" loop preload="none">
+      <!-- Replace src with a local file, e.g. assets/theme-song.mp3 -->
+      <source src="assets/them-song.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <!-- ============================================
+       CONFETTI CANVAS — minimal, used only on unlock
+  ============================================= -->
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+
+  <script src="script.js"></script>
+</body>
+</html>
